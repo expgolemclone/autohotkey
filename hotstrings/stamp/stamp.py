@@ -1,6 +1,6 @@
 """スタンプ画像を動的生成しクリップボードにコピーする."""
 
-import struct
+import io
 from datetime import date
 
 import win32clipboard
@@ -46,31 +46,23 @@ def draw_stamp() -> Image.Image:
 
 
 def copy_to_clipboard(img: Image.Image) -> None:
-    # RGBA -> RGB (白背景)
+    # PNG 形式
+    png_buf = io.BytesIO()
+    img.save(png_buf, format="PNG")
+
+    # BMP 形式 (白背景、CF_DIB フォールバック)
     bg = Image.new("RGB", img.size, (255, 255, 255))
     bg.paste(img, mask=img.split()[3])
+    bmp_buf = io.BytesIO()
+    bg.save(bmp_buf, format="BMP")
 
-    # BGR バイト列を取得し、BMP の bottom-to-top 順に並べ替え
-    w, h = bg.size
-    row_bytes = w * 3
-    stride = (row_bytes + 3) & ~3
-    pad = stride - row_bytes
-
-    raw = bg.tobytes("raw", "BGR")
-    rows = [raw[i * row_bytes : (i + 1) * row_bytes] + b"\x00" * pad for i in range(h)]
-    rows.reverse()
-    pixel_data = b"".join(rows)
-
-    # BITMAPINFOHEADER (40 bytes)
-    header = struct.pack(
-        "<IiiHHIIiiII",
-        40, w, h, 1, 24, 0, len(pixel_data), 0, 0, 0, 0,
-    )
+    CF_PNG = win32clipboard.RegisterClipboardFormat("PNG")
 
     win32clipboard.OpenClipboard()
     try:
         win32clipboard.EmptyClipboard()
-        win32clipboard.SetClipboardData(win32clipboard.CF_DIB, header + pixel_data)
+        win32clipboard.SetClipboardData(CF_PNG, png_buf.getvalue())
+        win32clipboard.SetClipboardData(win32clipboard.CF_DIB, bmp_buf.getvalue()[14:])
     finally:
         win32clipboard.CloseClipboard()
 
