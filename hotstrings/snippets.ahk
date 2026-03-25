@@ -159,7 +159,7 @@ E-mail: fujita-m.4c@mb.meidensha.co.jp
 }
 
 ; fix daily_report markdown
-:*://da:: {
+:*://daily:: {
     text := "
 (
 # TODO:fix markdown
@@ -237,7 +237,7 @@ E-mail: fujita-m.4c@mb.meidensha.co.jp
 ; 外部スクリプト実行
 ; ============================================================
 
-:*://music:: {
+:*://mplay:: {
     batPath := A_Desktop "\music\play.bat"
     if !FileExist(batPath) {
         FileAppend("play.bat not found: " batPath "`n", A_ScriptDir "\..\.log\error.log", "UTF-8-RAW")
