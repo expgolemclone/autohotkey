@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+set -eu
+
+repo_root="$(git rev-parse --show-toplevel)"
+
+pwsh -NoProfile -File "$repo_root/codegen/generate-vscode-open.ps1"
+git add "$repo_root/hotstrings/vscode-open.ahk"

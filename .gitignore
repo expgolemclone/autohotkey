@@ -1,0 +1,5 @@
+.tools/
+.claude/
+tests/*.log
+.log/
+wannado.md
