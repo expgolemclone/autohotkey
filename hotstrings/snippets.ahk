@@ -252,8 +252,8 @@ E-mail: fujita-m.4c@mb.meidensha.co.jp
 }
 
 :*://tdn:: {
-    script := A_Desktop "\tdnet\main.py"
-    Run('uv run "' script '"',, "Hide")
+    dir := A_Desktop "\tdnet"
+    Run(A_ComSpec ' /c uv run python main.py --ticker-csv ticker.csv', dir, "Hide")
 }
 
 ; ============================================================
