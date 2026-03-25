@@ -1,5 +1,6 @@
 .tools/
 .claude/
+__pycache__/
 tests/*.log
 .log/
 wannado.md

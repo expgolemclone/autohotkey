@@ -1,15 +1,20 @@
 """スタンプ画像を動的生成しクリップボードにコピーする."""
 
 import io
+import sys
 from datetime import date
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import win32clipboard
 from PIL import Image, ImageDraw, ImageFont
 
+from config import DOWNLOADS_DIR, FONT_PATH
+
 WIDTH, HEIGHT = 75, 75
 RED = (220, 40, 40, 255)
 TRANSPARENT = (0, 0, 0, 0)
-FONT_PATH = "C:/Windows/Fonts/msgothic.ttc"
 BORDER_WIDTH = 2
 
 
@@ -70,3 +75,4 @@ def copy_to_clipboard(img: Image.Image) -> None:
 if __name__ == "__main__":
     stamp = draw_stamp()
     copy_to_clipboard(stamp)
+    stamp.save(DOWNLOADS_DIR / "stamp.png")
