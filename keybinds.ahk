@@ -1,10 +1,6 @@
 #Requires AutoHotkey v2.0
 if !A_IsAdmin {
-    try {
-        Run('*RunAs "' A_ScriptFullPath '"')
-    } catch as e {
-        MsgBox("管理者昇格に失敗:`n" e.Message, "keybinds.ahk", "Icon!")
-    }
+    Run('*RunAs "' A_AhkPath '" "' A_ScriptFullPath '"')
     ExitApp
 }
 
