@@ -1,4 +1,3 @@
-.tools/
 .claude/
 __pycache__/
 tests/*.log
